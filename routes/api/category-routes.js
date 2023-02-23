@@ -8,8 +8,10 @@ router.get('/', async (req, res) => {
   // be sure to include its associated Products
   try {
     const categoryData = await Category.findAll({
-      include: [{ model: Product }],
-    });
+      include: [{ model: Product,
+      attributes: ['id', 'product_name', 'price', 'stock', 'category_id' ],
+    }],
+  });
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -22,7 +24,8 @@ router.get('/:id', async (req, res) => {
   // be sure to include its associated Products
   try {
     const categoryData = await Category.findByPk(req.params.id, {
-      include: [{ model: Product }], 
+      include: [{ model: Product,
+      attributes: ['id', 'product_name', 'price', 'stock', 'category_id' ], }], 
     });
 
     if (!categoryData) {
@@ -49,8 +52,10 @@ router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   try {
       const categoryData = await Category.update(req.body, {
+      
         where: {
-          id: req.params.id
+          id: req.params.id,
+          category_name: req.body.category_name,
         }
       });
       res.status(200).json(categoryData);
