@@ -29,6 +29,10 @@ router.get('/:id', async (req, res) => {
       attributes: ['id', 'product_name', 'price', 'stock', 'category_id' ],
      }],
     });
+    if (!tagData) {
+      res.status(404).json({ message: 'No tag found!' });
+      return;
+    }
     res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
@@ -52,9 +56,12 @@ router.put('/:id', async (req, res) => {
     const tagData = await Tag.update(req.body, {
       where: {
         id: req.params.id,
-        tag_name: req.body.tag_name,
       }
     });
+    if (!tagData[0]) {
+      res.status(404).json({ message: 'No tag found!' });
+      return;
+    }
     res.status(200).json(tagData);
   } catch (err) {
     res.status(400).json(err);
@@ -69,6 +76,10 @@ router.delete('/:id', async (req, res) => {
         id: req.params.id,
       }
     });
+    if (!tagData) {
+      res.status(404).json({ message: 'No tag found!' });
+      return;
+    }
     res.status(200).json(tagData);
       } catch (err) {
         res.status(400).json(err);

@@ -55,9 +55,12 @@ router.put('/:id', async (req, res) => {
       
         where: {
           id: req.params.id,
-          category_name: req.body.category_name,
         }
       });
+      if (!categoryData[0]) {
+        res.status(404).json({ message: 'No category found!' });
+        return;
+      }
       res.status(200).json(categoryData);
     } catch (err) {
       res.status(400).json(err);
